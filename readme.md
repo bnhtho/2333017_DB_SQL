@@ -38,8 +38,33 @@ GO
 EXEC sp_MSforeachtable 'DROP TABLE ?'
 GO
 ```
+## Truy vấn danh sách sản phẩm và nhà cung cấp
+```sql
+SELECT 
+    SP.MaSanPham, 
+    SP.TenSanPham, 
+    SP.DonViNhoNhat, 
+    SP.SoSaoTrungBinh,
+    CN.TenChiNhanh,
+    NCC.TenNhaCungCap
+FROM DanhMucSanPham SP
+JOIN ChiNhanh CN ON SP.MaChiNhanh = CN.MaChiNhanh
+JOIN NhaCungCap NCC ON SP.MaNhaCungCap = NCC.MaNhaCungCap;
 
-## Kiểm tra SQL nhanh . Chi nhánh áp dụng các loại khuyến mãi nào, mô tả 
+```
+### Truy vấn chi nhánh áp dụng mã khuyến mãi kèm mô tả
+```sql
+SELECT 
+    CN.TenChiNhanh, 
+    KM.MaKhuyenMai, 
+    KMCT.NgayBatDau, 
+    KMCT.NgayKetThuc, 
+    KMCT.MoTa
+FROM ChiNhanh CN
+JOIN KhuyenMai KM ON CN.MaChiNhanh = KM.MaChiNhanh
+JOIN ChuongTrinhKhuyenMai KMCT ON KM.MaKhuyenMai = KMCT.MaKhuyenMai;
+```
+### Truy vấn Chi nhánh áp dụng các loại khuyến mãi nào, mô tả 
 ```
 SELECT 
     cn.TenChiNhanh,
