@@ -39,6 +39,18 @@ EXEC sp_MSforeachtable 'DROP TABLE ?'
 GO
 ```
 
+## Kiểm tra SQL nhanh . Chi nhánh áp dụng các loại khuyến mãi nào, mô tả 
+```
+SELECT 
+    cn.TenChiNhanh,
+    km.MaKhuyenMai,
+    ctkm.NgayBatDau,
+    ctkm.NgayKetThuc,
+    ctkm.MoTa
+FROM ChiNhanh cn
+JOIN KhuyenMai km ON cn.MaChiNhanh = km.MaChiNhanh
+JOIN ChuongTrinhKhuyenMai ctkm ON km.MaKhuyenMai = ctkm.MaKhuyenMai;
+```
 ## Triggers
 ### Tính lương nhân viên
 
