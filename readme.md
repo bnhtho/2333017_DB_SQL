@@ -1,6 +1,26 @@
-Chứa sql bài tập lớn Số 2 môn Cơ Sở Dữ Liệu 
-- Chủ đề: Medical
-- Học kì 241 - Lớp thực hành chính quy L12 HCMUT
+## Thay đổi so với ERD
+> [!NOTE]
+> - Trong thực thể `DanhGia`, xoá đánh giá theo sao vì nó đã có sẵn trong thực thể `DanhMucSanPham` (nếu có sự thay đổi gì thì sẽ sửa lại và bổ sung sau)
+> - Thay đổi mối quan hệ `Được Giao Bởi` thành `ChiTietDonHang`
+> - Thay đổi thực thể `Hoá Đơn` thành `ChiTietHoaDon`
+> - Thêm cột id `MaNguoiPhuThuoc` để dễ truy vấn hơn (trong trường hợp bắt buộc)
+
+### Thuộc tính Giá trị đầu vào
+| Thực thể   |Thuộc tính|
+| -------- | ------- |
+| Khách hàng  | Điểm tích luỹ |
+| Đơn hàng | Tiền thuốc |
+| Hoá đơn | số tiền khuyến mãi |
+| Danh mục sản phẩm | Số sao trung bình |
+| Chi nhánh | Số lượng nhân viên và sản phẩm | 
+
+## Cấu trúc file
+| File    | Nội dung |
+| -------- | ------- |
+| BTL_2_Nhom_1_L12.sql  | Chứa các bảng hiện thực từ `ERD`    |
+| BTL_2_Nhom_1_L12_Insert.sql | Insert Dữ liệu mẫu     |
+| BTL_2_Nhom1_L12_Producre.sql   | Phần 2.4.1 trong bài |
+| BTL_2_Nhom1_L12_Trigger.sql   | Trigger |
 
 ## Truy vấn nhanh
 > [!NOTE]  
@@ -91,211 +111,6 @@ JOIN KhuyenMai km ON cn.MaChiNhanh = km.MaChiNhanh
 JOIN ChuongTrinhKhuyenMai ctkm ON km.MaKhuyenMai = ctkm.MaKhuyenMai;
 ```
 ## Triggers
-### Tính lương nhân viên
-
-```sql
--- Trigger [1]: Tạo trigger tính lương nhân viên theo 1 năm.
-GO
-CREATE TRIGGER tr_TinhLuongNhanVien ON NhanVien AFTER INSERT AS 
-BEGIN
-    DECLARE @MaNhanVien INT;
-    DECLARE @KinhNghiem INT;
-    DECLARE @Luong DECIMAL(10, 2);
-
-    -- Lấy giá trị từ bảng inserted (dùng khi chèn hoặc cập nhật)
-    SELECT @MaNhanVien = MaNhanVien, @KinhNghiem = CAST(KinhNghiem AS INT) FROM inserted;
-
-    -- Tính lương dựa trên kinh nghiệm
-    SET @Luong = @KinhNghiem * 2000000; -- Mỗi năm kinh nghiệm tương ứng 2 triệu đồng
-
-    -- Cập nhật lương vào bảng nhân viên
-    UPDATE NhanVien
-    SET LuongNhanVien = @Luong
-    WHERE MaNhanVien = @MaNhanVien;
-END;
-GO
-```
-### Tính lương bác sĩ
-```sql 
---- Trigger [2]: Tính lương bác sĩ
-GO
-CREATE TRIGGER tr_TinhLuongBacSi
-ON BacSi
-AFTER INSERT, UPDATE
-AS
-BEGIN
-    DECLARE @MaNhanVien INT;
-    DECLARE @ChungChi VARCHAR(1);
-    DECLARE @Luong DECIMAL(10, 2);
-
-    -- Lấy giá trị từ bảng inserted
-    SELECT @MaNhanVien = MaNhanVien, @ChungChi = ChungChi FROM inserted;
-
-    -- Lương bác sĩ theo chứng chỉ
-    IF @ChungChi = 'A' -- Sơ cấp
-    BEGIN
-        SET @Luong = 20000000; -- Ví dụ, bác sĩ sơ cấp có lương 20 triệu
-    END
-    ELSE IF @ChungChi = 'B' -- Nâng cao
-    BEGIN
-        SET @Luong = 30000000; -- Bác sĩ nâng cao có lương 30 triệu
-    END
-    ELSE
-    BEGIN
-        SET @Luong = 25000000; -- Mặc định
-    END
-
-    -- Cập nhật lương cho nhân viên
-    UPDATE NhanVien
-    SET LuongNhanVien = @Luong
-    WHERE MaNhanVien = @MaNhanVien;
-END;
-GO
-```
-### Tính lương cho dược dĩ
-```sql 
--- Trigger [3]: Tính lương dược sĩ
-GO
-CREATE TRIGGER TinhLuongDuocSi
-ON DuocSi
-AFTER INSERT, UPDATE
-AS
-BEGIN
-    DECLARE @MaNhanVien INT;
-    DECLARE @TrinhDo VARCHAR(1);
-    DECLARE @Luong DECIMAL(10, 2);
-
-    -- Lấy giá trị từ bảng inserted
-    SELECT @MaNhanVien = MaNhanVien, @TrinhDo = TrinhDo FROM inserted;
-
-    -- Lương dược sĩ theo trình độ
-    IF @TrinhDo = 'C' -- Cao đẳng
-    BEGIN
-        SET @Luong = 12000000; -- Dược sĩ cao đẳng có lương 12 triệu
-    END
-    ELSE IF @TrinhDo = 'D' -- Đại học
-    BEGIN
-        SET @Luong = 18000000; -- Dược sĩ đại học có lương 18 triệu
-    END
-    ELSE
-    BEGIN
-        SET @Luong = 15000000; -- Mặc định
-    END
-
-    -- Cập nhật lương cho nhân viên
-    UPDATE NhanVien
-    SET LuongNhanVien = @Luong
-    WHERE MaNhanVien = @MaNhanVien;
-END;
-GO
-```
-
-### Tính tổng lương cho nhân viên 
-```sql
--- Trigger tính tổng lương cho nhân viên
-GO
-CREATE TRIGGER tr_TinhTongLuongNhanVien ON NhanVien
-AFTER INSERT, UPDATE AS 
-BEGIN
-    DECLARE @MaNhanVien INT;
-    DECLARE @KinhNghiem INT;
-    DECLARE @LuongCung DECIMAL(10, 2);
-    DECLARE @LuongKinhNghiem DECIMAL(10, 2);
-    DECLARE @LuongVaiTro DECIMAL(10, 2);
-    DECLARE @LuongTrinhDo DECIMAL(10, 2);
-    DECLARE @TongLuong DECIMAL(10, 2);
-
-    -- Lấy giá trị từ bảng inserted (dùng khi chèn hoặc cập nhật)
-    SELECT @MaNhanVien = MaNhanVien, 
-           @KinhNghiem = CAST(KinhNghiem AS INT), 
-           @LuongCung = LuongNhanVien
-    FROM inserted;
-
-    -- Tính lương theo kinh nghiệm (2 triệu đồng mỗi năm)
-    SET @LuongKinhNghiem = @KinhNghiem * 2000000; 
-
-    -- Lương theo vai trò (bác sĩ/dược sĩ)
-    SET @LuongVaiTro = 0;
-
-    -- Kiểm tra vai trò bác sĩ
-    IF EXISTS (SELECT 1 FROM BacSi WHERE MaNhanVien = @MaNhanVien)
-    BEGIN
-        DECLARE @ChungChi VARCHAR(1);
-        SELECT @ChungChi = ChungChi FROM BacSi WHERE MaNhanVien = @MaNhanVien;
-
-        -- Lương bác sĩ theo chứng chỉ
-        IF @ChungChi = 'A' -- Sơ cấp
-        BEGIN
-            SET @LuongVaiTro = 20000000; -- Bác sĩ sơ cấp có lương 20 triệu
-        END
-        ELSE IF @ChungChi = 'B' -- Nâng cao
-        BEGIN
-            SET @LuongVaiTro = 30000000; -- Bác sĩ nâng cao có lương 30 triệu
-        END
-        ELSE
-        BEGIN
-            SET @LuongVaiTro = 25000000; -- Mặc định
-        END
-    END
-    -- Kiểm tra vai trò dược sĩ
-    ELSE IF EXISTS (SELECT 1 FROM DuocSi WHERE MaNhanVien = @MaNhanVien)
-    BEGIN
-        DECLARE @TrinhDo VARCHAR(1);
-        SELECT @TrinhDo = TrinhDo FROM DuocSi WHERE MaNhanVien = @MaNhanVien;
-
-        -- Lương dược sĩ theo trình độ
-        IF @TrinhDo = 'C' -- Cao đẳng
-        BEGIN
-            SET @LuongVaiTro = 12000000; -- Dược sĩ cao đẳng có lương 12 triệu
-        END
-        ELSE IF @TrinhDo = 'D' -- Đại học
-        BEGIN
-            SET @LuongVaiTro = 18000000; -- Dược sĩ đại học có lương 18 triệu
-        END
-        ELSE
-        BEGIN
-            SET @LuongVaiTro = 15000000; -- Mặc định
-        END
-    END
-
-    -- Tổng lương = Lương cứng + Lương kinh nghiệm + Lương theo vai trò
-    SET @TongLuong = @LuongCung + @LuongKinhNghiem + @LuongVaiTro;
-
-    -- Cập nhật tổng lương cho nhân viên
-    UPDATE NhanVien
-    SET LuongNhanVien = @TongLuong
-    WHERE MaNhanVien = @MaNhanVien;
-END;
-GO
-
-```
-### Tính lương nhân viên dựa theo kinh nghiệm
-Đơn vị là (năm)
-
-```sql
-
--- Trigger [1]: Tạo trigger tính lương nhân viên theo 1 năm.
-GO
-CREATE TRIGGER tr_TinhLuongNhanVien ON NhanVien AFTER INSERT AS 
-BEGIN
-    DECLARE @MaNhanVien INT;
-    DECLARE @KinhNghiem INT;
-    DECLARE @Luong DECIMAL(10, 2);
-
-    -- Lấy giá trị từ bảng inserted (dùng khi chèn hoặc cập nhật)
-    SELECT @MaNhanVien = MaNhanVien, @KinhNghiem = CAST(KinhNghiem AS INT) FROM inserted;
-
-    -- Tính lương dựa trên kinh nghiệm
-    SET @Luong = @KinhNghiem * 2000000; -- Mỗi năm kinh nghiệm tương ứng 2 triệu đồng
-
-    -- Cập nhật lương vào bảng nhân viên
-    UPDATE NhanVien
-    SET LuongNhanVien = @Luong
-    WHERE MaNhanVien = @MaNhanVien;
-END;
-GO
-```
-
 ### Số lượng nhân viên và sản phẩm hợp lệ 
 > [!NOTE]  
 > Số lượng nhân viên không được ít khi so với số lượng sản phẩm
@@ -319,4 +134,54 @@ BEGIN
 	END
 END;
 GO
+```
+### Produces
+```sql
+use Medical
+-- Phần 2.4.1
+-- Câu 1
+-- Create PROCEDURE KiemTraNhanVienSanPham
+CREATE PROCEDURE KiemTraNhanVienSanPham
+    @MaChiNhanh INT
+AS
+BEGIN
+    DECLARE @SoLuongNhanVien INT;
+    DECLARE @SoLuongSanPham INT;
+    
+    -- Kiểm tra tham số đầu vào
+    IF @MaChiNhanh IS NULL
+    BEGIN
+        PRINT 'Mã chi nhánh không hợp lệ.';
+        RETURN;
+    END
+	 -- Kiểm tra sự tồn tại của mã chi nhánh trong bảng ChiNhanh
+    IF NOT EXISTS (SELECT 1 FROM ChiNhanh WHERE MaChiNhanh = @MaChiNhanh)
+    BEGIN
+        PRINT 'Mã chi nhánh không tồn tại trong hệ thống.';
+        RETURN;
+    END
+    -- Lấy số lượng nhân viên và sản phẩm từ bảng ChiNhanh
+    SELECT @SoLuongNhanVien = SoLuongNhanVien, @SoLuongSanPham = SoLuongSanPham
+    FROM ChiNhanh
+    WHERE MaChiNhanh = @MaChiNhanh;
+
+    -- Kiểm tra điều kiện số lượng nhân viên
+    IF @SoLuongNhanVien < @SoLuongSanPham / 10
+    BEGIN
+        PRINT 'Số lượng nhân viên không đủ để quản lý số lượng sản phẩm.';
+    END
+    ELSE
+    BEGIN
+        PRINT 'Số lượng nhân viên đủ để quản lý số lượng sản phẩm.';
+    END
+END;
+GO
+EXEC KiemTraNhanVienSanPham @MaChiNhanh = 5;
+GO
+```
+
+## Ghi chú
+### Công thức tính tổng tiền
+```
+Tổng tiền = tiền thuốc + tiền khuyến mãi + chi phí giao hàng  
 ```
