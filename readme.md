@@ -5,6 +5,20 @@ Chứa sql bài tập lớn Số 2 môn Cơ Sở Dữ Liệu
 ## Truy vấn nhanh
 > [!NOTE]  
 > Những câu truy vấn hữu dụng khi làm bài (Vẫn trong quá trình hoàn thiện)
+### Truy vấn danh sách đánh giá từ khách hàng và sản phẩm
+
+```sql
+SELECT * FROM KhachHang
+SELECT 
+    KH.TenKhachHang,
+    KH.SoDienThoai,
+    DG.MaSanPham,
+    DG.NoiDungDanhGia
+FROM 
+    KhachHang KH
+JOIN 
+    DanhGia DG ON KH.MaKhachHang = DG.MaKhachHang;
+```
 
 ### Tìm thông tin nhân viên là bác sĩ hay nhân viên
 ```sql

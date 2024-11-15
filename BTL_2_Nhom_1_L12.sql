@@ -11,7 +11,6 @@ GO
 USE Medical
 -- Phần 1: Chi nhánh, chương trình khuyến mãi và nhân viên
 -- [1] Nhân viên
-
 CREATE TABLE NhanVien (
     MaNhanVien INT PRIMARY KEY,
     TenNhanVien VARCHAR(100) NOT NULL,
@@ -89,7 +88,44 @@ CREATE TABLE DanhMucSanPham (
     FOREIGN KEY (MaNhaCungCap) REFERENCES NhaCungCap(MaNhaCungCap) ON DELETE CASCADE
 );
 
+CREATE TABLE DanhMucSanPham (
+    MaSanPham VARCHAR(10) PRIMARY KEY NOT NULL,
+    TenSanPham VARCHAR(50) NOT NULL,
+    DonViNhoNhat VARCHAR(20) NOT NULL, -- Đơn vị nhỏ nhất (ví dụ: Hộp, Vỉ)
+    SoSaoTrungBinh INT CHECK (SoSaoTrungBinh BETWEEN 1 AND 5), -- (1 đến 5, đơn vị là sao)
+    MaChiNhanh INT NOT NULL,
+    MaNhaCungCap VARCHAR(10) NOT NULL,
+    FOREIGN KEY (MaChiNhanh) REFERENCES ChiNhanh(MaChiNhanh) ON DELETE CASCADE,
+    FOREIGN KEY (MaNhaCungCap) REFERENCES NhaCungCap(MaNhaCungCap) ON DELETE CASCADE
+);
+-- Phần 3 : Khách hàng và đơn hàng
+-- [9] Khách hàng
+CREATE TABLE KhachHang (
+    MaKhachHang INT IDENTITY(1,1) PRIMARY KEY ,
+    TenKhachHang VARCHAR(100) NOT NULL,
+    SoNha VARCHAR(100) NOT NULL,
+    TenDuong VARCHAR(100) NOT NULL,
+	SoDienThoai VARCHAR(11) NOT NULL, 
+	MaGioiThieu VARCHAR(11),
+	DiemTichLuy INT NOT NULL,
+	Tinh VARCHAR(100) NOT NULL
+);
+-- Phần 4 : Các tính năng khác
+-- ╔═══════════════════════╗
+-- ║    [x]Đánh giá        ║
+-- ╚═══════════════════════╝
+-- Đánh giá sản phẩm 
+-- Cần có bảng DanhMucSanPham và KhachHang
+CREATE TABLE DanhGia (
+	MaDanhGia VARCHAR(10) PRIMARY KEY NOT NULL,
+	MaKhachHang INT NOT NULL,  
+	NoiDungDanhGia VARCHAR(255), -- Có thể null
+	MaSanPham VARCHAR(10) NOT NULL,
+	FOREIGN KEY (MaKhachHang) REFERENCES KhachHang(MaKhachHang) ON DELETE CASCADE,
+    FOREIGN KEY (MaSanPham) REFERENCES DanhMucSanPham(MaSanPham) ON DELETE CASCADE
+);
 -- Trigger kiểm tra số lương nhân viên và sản phẩm.
+
 GO
 CREATE TRIGGER trg_SoluongNhanvien_SanPham ON ChiNhanh  AFTER INSERT, UPDATE AS
 BEGIN
