@@ -148,3 +148,4 @@ CREATE TABLE ChiTietHoaDon (
     ThoiGianXuatHoaDon DATETIME NOT NULL,       
     TongTien DECIMAL(10, 2) NOT NULL
 );
+
