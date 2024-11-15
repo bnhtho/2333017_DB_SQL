@@ -87,21 +87,10 @@ CREATE TABLE DanhMucSanPham (
     FOREIGN KEY (MaChiNhanh) REFERENCES ChiNhanh(MaChiNhanh) ON DELETE CASCADE,
     FOREIGN KEY (MaNhaCungCap) REFERENCES NhaCungCap(MaNhaCungCap) ON DELETE CASCADE
 );
-
-CREATE TABLE DanhMucSanPham (
-    MaSanPham VARCHAR(10) PRIMARY KEY NOT NULL,
-    TenSanPham VARCHAR(50) NOT NULL,
-    DonViNhoNhat VARCHAR(20) NOT NULL, -- Đơn vị nhỏ nhất (ví dụ: Hộp, Vỉ)
-    SoSaoTrungBinh INT CHECK (SoSaoTrungBinh BETWEEN 1 AND 5), -- (1 đến 5, đơn vị là sao)
-    MaChiNhanh INT NOT NULL,
-    MaNhaCungCap VARCHAR(10) NOT NULL,
-    FOREIGN KEY (MaChiNhanh) REFERENCES ChiNhanh(MaChiNhanh) ON DELETE CASCADE,
-    FOREIGN KEY (MaNhaCungCap) REFERENCES NhaCungCap(MaNhaCungCap) ON DELETE CASCADE
-);
 -- Phần 3 : Khách hàng và đơn hàng
 -- [9] Khách hàng
 CREATE TABLE KhachHang (
-    MaKhachHang INT IDENTITY(1,1) PRIMARY KEY ,
+    MaKhachHang VARCHAR(10) PRIMARY KEY ,
     TenKhachHang VARCHAR(100) NOT NULL,
     SoNha VARCHAR(100) NOT NULL,
     TenDuong VARCHAR(100) NOT NULL,
@@ -110,20 +99,52 @@ CREATE TABLE KhachHang (
 	DiemTichLuy INT NOT NULL,
 	Tinh VARCHAR(100) NOT NULL
 );
--- Phần 4 : Các tính năng khác
--- ╔═══════════════════════╗
--- ║    [x]Đánh giá        ║
--- ╚═══════════════════════╝
--- Đánh giá sản phẩm 
+
+-- [10] Đơn hàng
+CREATE TABLE DonHang (
+	MaDonHang VARCHAR(10) PRIMARY KEY,
+	ToaThuoc VARCHAR(255) NOT NULL,
+	TienThuoc DECIMAL(10,2) NOT NULL,
+) 
+
+-- [11] Đơn vị giao hàng
+CREATE TABLE DonViGiaoHang (
+    MaDonVi VARCHAR(10) PRIMARY KEY,
+    TenDonVi VARCHAR(255) NOT NULL
+);
+
+--
+-- Phần 4 : Các mối liên hệ giữa các thực thể
+-- [12] Đánh giá sản phẩm
 -- Cần có bảng DanhMucSanPham và KhachHang
 CREATE TABLE DanhGia (
 	MaDanhGia VARCHAR(10) PRIMARY KEY NOT NULL,
-	MaKhachHang INT NOT NULL,  
+	MaKhachHang VARCHAR(10) NOT NULL,  
 	NoiDungDanhGia VARCHAR(255), -- Có thể null
 	MaSanPham VARCHAR(10) NOT NULL,
 	FOREIGN KEY (MaKhachHang) REFERENCES KhachHang(MaKhachHang) ON DELETE CASCADE,
     FOREIGN KEY (MaSanPham) REFERENCES DanhMucSanPham(MaSanPham) ON DELETE CASCADE
 );
+
+-- [13] (Chi tiết đơn hàng) - <được giao bởi>
+-- Đây là bảng chứa thông tin đơn hàng sẽ được giao / tình trạng và đơn vị đơn hàng
+CREATE TABLE ChiTietDonHang (
+    MaVanDon VARCHAR(10) PRIMARY KEY NOT NULL,
+    TinhTrang VARCHAR(50) NOT NULL,       -- Tình trạng đơn hàng
+    DiaChiDonHang VARCHAR(255) NOT NULL,  -- Địa chỉ giao hàng
+    MaDonViVanChuyen VARCHAR(10) NOT NULL, -- Mã đơn vị vận chuyển
+	ChiPhiGiaoHang DECIMAL(10, 2), -- chi phí giao hàng
+    FOREIGN KEY (MaDonViVanChuyen) REFERENCES DonViGiaoHang(MaDonVi) ON DELETE CASCADE
+);
+-- [14] Chi tiết hoá dơn
+CREATE TABLE ChiTietHoaDon (
+    MaHoaDon VARCHAR(10) PRIMARY KEY NOT NULL,  -- Mã hóa đơn
+    SoTienKhuyenMai DECIMAL(10, 2) DEFAULT 0,   -- Số tiền khuyến mãi (nếu không có thì là 0)
+    ApDungKhuyenMai BIT NOT NULL DEFAULT 0,     -- 0: Không áp dụng, 1: Có áp dụng
+    ThoiGianXuatHoaDon DATETIME NOT NULL,       -- Thời gian xuất hóa đơn
+    TongTien DECIMAL(10, 2) NOT NULL            -- Tổng tiền (tính toán thủ công hoặc qua ứng dụng)
+);
+SELECT * FROM ChiTietHoaDon
 -- Trigger kiểm tra số lương nhân viên và sản phẩm.
 
 GO
@@ -139,4 +160,28 @@ BEGIN
         RAISERROR ('Số lượng nhân viên không đủ để quản lý số lượng sản phẩm hiện có.', 16, 1);
     END
 END;
+GO
+
+GO
+CREATE TRIGGER trg_CalculateTongTien
+ON ChiTietHoaDon
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    -- Tính toán lại tổng tiền cho mỗi bản ghi mới chèn hoặc cập nhật
+    UPDATE cthd
+    SET cthd.TongTien = 
+        CASE 
+            WHEN i.ApDungKhuyenMai = 1 THEN
+                (SELECT dh.TienThuoc FROM DonHang dh WHERE dh.MaDonHang = i.MaHoaDon)
+                - i.SoTienKhuyenMai 
+                + (SELECT ctdh.ChiPhiGiaoHang FROM ChiTietDonHang ctdh WHERE ctdh.MaVanDon = i.MaHoaDon)
+            ELSE
+                (SELECT dh.TienThuoc FROM DonHang dh WHERE dh.MaDonHang = i.MaHoaDon)
+                + (SELECT ctdh.ChiPhiGiaoHang FROM ChiTietDonHang ctdh WHERE ctdh.MaVanDon = i.MaHoaDon)
+        END
+    FROM ChiTietHoaDon cthd
+    INNER JOIN inserted i ON cthd.MaHoaDon = i.MaHoaDon;
+END;
+
 GO
