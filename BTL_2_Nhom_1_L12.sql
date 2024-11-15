@@ -33,7 +33,6 @@ CREATE TABLE BacSi (
     ChuyenMon NVARCHAR(1) NOT NULL,  -- Sửa thành NVARCHAR
     FOREIGN KEY (MaNhanVien) REFERENCES NhanVien(MaNhanVien) ON DELETE CASCADE
 );
-
 -- [3] Dược sĩ
 CREATE TABLE DuocSi (
     MaNhanVien INT PRIMARY KEY,
@@ -41,8 +40,19 @@ CREATE TABLE DuocSi (
     TrinhDo NVARCHAR(1) NOT NULL,  -- Sửa thành NVARCHAR
     FOREIGN KEY (MaNhanVien) REFERENCES NhanVien(MaNhanVien) ON DELETE CASCADE
 );
+-- [4] Người phụ thuộc
+CREATE TABLE NguoiPhuThuoc (
+    MaNguoiPhuThuoc INT PRIMARY KEY,  -- Thêm khóa chính cho bảng người phụ thuộc
+    MaNhanVien INT,  -- Thêm khóa ngoại để liên kết với bảng NhanVien
+    TenNguoiPhuThuoc NVARCHAR(100) NOT NULL,  -- Sửa thành NVARCHAR
+    NgaySinh DATE NOT NULL CHECK (NgaySinh < GETDATE()), 
+    GioiTinh CHAR(1) CHECK (GioiTinh IN ('M', 'F')),
+    MoiQuanHe NVARCHAR(99) CHECK( MoiQuanHe IN ('Anh','Chị','Em','Cha','Mẹ','Con')),
+    CONSTRAINT FK_NguoiPhuThuoc_NhanVien FOREIGN KEY (MaNhanVien) REFERENCES NhanVien(MaNhanVien)
+);
 
--- [4] Chi nhánh
+
+-- [5] Chi nhánh
 CREATE TABLE ChiNhanh (
     MaChiNhanh INT PRIMARY KEY,
     MaNhanVienQuanLy INT NOT NULL,
@@ -53,14 +63,14 @@ CREATE TABLE ChiNhanh (
     FOREIGN KEY (MaNhanVienQuanLy) REFERENCES NhanVien(MaNhanVien) ON DELETE CASCADE
 );
 
--- [5] Khuyến mãi
+-- [6] Khuyến mãi
 CREATE TABLE KhuyenMai (
     MaKhuyenMai NVARCHAR(20) PRIMARY KEY NOT NULL,  -- Sửa thành NVARCHAR
     MaChiNhanh INT NOT NULL,
     FOREIGN KEY (MaChiNhanh) REFERENCES ChiNhanh(MaChiNhanh) ON DELETE CASCADE
 );
 
--- [6] Chương trình khuyến mãi
+-- [7] Chương trình khuyến mãi
 CREATE TABLE ChuongTrinhKhuyenMai (
     MaKhuyenMai NVARCHAR(20) PRIMARY KEY NOT NULL,  -- Sửa thành NVARCHAR
     MaChiNhanh INT NOT NULL,
@@ -73,14 +83,14 @@ CREATE TABLE ChuongTrinhKhuyenMai (
 );
 
 -- Phần 2: Sản phẩm và nhà cung cấp
--- [7] Nhà cung cấp
+-- [8] Nhà cung cấp
 CREATE TABLE NhaCungCap (
     MaNhaCungCap NVARCHAR(10) PRIMARY KEY NOT NULL,  -- Sửa thành NVARCHAR
     TenNhaCungCap NVARCHAR(50) NOT NULL,  -- Sửa thành NVARCHAR
     DiaChi NVARCHAR(100)  -- Sửa thành NVARCHAR
 );
 
--- [8] Danh mục sản phẩm
+-- [9] Danh mục sản phẩm
 CREATE TABLE DanhMucSanPham (
     MaSanPham NVARCHAR(10) PRIMARY KEY NOT NULL,  -- Sửa thành NVARCHAR
     TenSanPham NVARCHAR(50) NOT NULL,  -- Sửa thành NVARCHAR
@@ -93,7 +103,7 @@ CREATE TABLE DanhMucSanPham (
 );
 
 -- Phần 3 : Khách hàng và đơn hàng
--- [9] Khách hàng
+-- [10] Khách hàng
 CREATE TABLE KhachHang (
     MaKhachHang NVARCHAR(10) PRIMARY KEY,  -- Sửa thành NVARCHAR
     TenKhachHang NVARCHAR(100) NOT NULL,  -- Sửa thành NVARCHAR
@@ -105,14 +115,14 @@ CREATE TABLE KhachHang (
     Tinh NVARCHAR(100) NOT NULL  -- Sửa thành NVARCHAR
 );
 
--- [10] Đơn hàng
+-- [11] Đơn hàng
 CREATE TABLE DonHang (
     MaDonHang NVARCHAR(10) PRIMARY KEY,  -- Sửa thành NVARCHAR
     ToaThuoc NVARCHAR(255) NOT NULL,  -- Sửa thành NVARCHAR
     TienThuoc DECIMAL(10, 2) NOT NULL
 );
 
--- [11] Đơn vị giao hàng
+-- [12] Đơn vị giao hàng
 CREATE TABLE DonViGiaoHang (
     MaDonVi NVARCHAR(10) PRIMARY KEY,  -- Sửa thành NVARCHAR
     TenDonVi NVARCHAR(255) NOT NULL  -- Sửa thành NVARCHAR
@@ -120,7 +130,7 @@ CREATE TABLE DonViGiaoHang (
 
 --
 -- Phần 4 : Các mối liên hệ giữa các thực thể
--- [12] Đánh giá sản phẩm
+-- [13] Đánh giá sản phẩm
 CREATE TABLE DanhGia (
     MaDanhGia NVARCHAR(10) PRIMARY KEY NOT NULL,  -- Sửa thành NVARCHAR
     MaKhachHang NVARCHAR(10) NOT NULL,  
@@ -130,7 +140,7 @@ CREATE TABLE DanhGia (
     FOREIGN KEY (MaSanPham) REFERENCES DanhMucSanPham(MaSanPham) ON DELETE CASCADE
 );
 
--- [13] (Chi tiết đơn hàng) - <được giao bởi>
+-- [14] (Chi tiết đơn hàng) - <được giao bởi>
 CREATE TABLE ChiTietDonHang (
     MaVanDon NVARCHAR(10) PRIMARY KEY NOT NULL,  -- Sửa thành NVARCHAR
     TinhTrang NVARCHAR(50) NOT NULL,  -- Sửa thành NVARCHAR
@@ -140,7 +150,7 @@ CREATE TABLE ChiTietDonHang (
     FOREIGN KEY (MaDonViVanChuyen) REFERENCES DonViGiaoHang(MaDonVi) ON DELETE CASCADE
 );
 
--- [14] Chi tiết hoá dơn
+-- [15] Chi tiết hoá dơn
 CREATE TABLE ChiTietHoaDon (
     MaHoaDon NVARCHAR(10) PRIMARY KEY NOT NULL,  -- Sửa thành NVARCHAR
     SoTienKhuyenMai DECIMAL(10, 2) DEFAULT 0,   
@@ -148,4 +158,3 @@ CREATE TABLE ChiTietHoaDon (
     ThoiGianXuatHoaDon DATETIME NOT NULL,       
     TongTien DECIMAL(10, 2) NOT NULL
 );
-

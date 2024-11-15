@@ -17,6 +17,15 @@ INSERT INTO DuocSi (MaNhanVien, GiayPhepHanhNghe, TrinhDo)
 VALUES
 (1, 'GP123456', 'C'),
 (2, 'GP987654', 'D');
+INSERT INTO NguoiPhuThuoc (MaNguoiPhuThuoc, MaNhanVien, TenNguoiPhuThuoc, NgaySinh, GioiTinh, MoiQuanHe)
+VALUES
+(1, 1, 'Nguyen Thi Lan', '2015-06-25', 'F', 'Con'),
+(2, 1, 'Nguyen Minh Hoang', '2010-02-10', 'M', 'Con'),
+(3, 2, 'Tran Thi Bich', '2000-07-18', 'F', 'Chị')
+
+
+-- QUERY: TÌM NGƯỜI PHỤ THUỘC
+
 
 -- Insert chi nhánh
 INSERT INTO ChiNhanh (MaChiNhanh, MaNhanVienQuanLy, SoLuongSanPham, SoLuongNhanVien, DiaChi, TenChiNhanh)
