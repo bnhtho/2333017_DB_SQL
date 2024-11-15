@@ -1,19 +1,18 @@
-﻿IF NOT EXISTS (
+﻿
+IF NOT EXISTS (
     SELECT *
     FROM sys.databases
     WHERE name = 'Medical'
 )
 BEGIN
     CREATE DATABASE [Medical]
-	ALTER DATABASE Medical COLLATE SQL_Latin1_General_CP1_CI_AS;
 END
 GO
-
-USE Medical
+-- Hỗ trợ tiếng Việt có dấu trong Database Medical
 ALTER DATABASE Medical
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
---> set unicode
+COLLATE Latin1_General_100_CI_AS_SC_UTF8;
+--
+USE Medical
 -- Phần 1: Chi nhánh, chương trình khuyến mãi và nhân viên
 -- [1] Nhân viên
 CREATE TABLE NhanVien (
@@ -149,41 +148,3 @@ CREATE TABLE ChiTietHoaDon (
     ThoiGianXuatHoaDon DATETIME NOT NULL,       
     TongTien DECIMAL(10, 2) NOT NULL
 );
--- [TRIGGER]
-GO
-CREATE TRIGGER trg_SoluongNhanvien_SanPham ON ChiNhanh  AFTER INSERT, UPDATE AS
-BEGIN
-    IF EXISTS (
-        SELECT 1
-        FROM inserted
-        WHERE SoLuongNhanVien < SoLuongSanPham / 10
-    )
-    BEGIN
-        ROLLBACK TRANSACTION;
-        RAISERROR ('Số lượng nhân viên không đủ để quản lý số lượng sản phẩm hiện có.', 16, 1);
-    END
-END;
-GO
-
-CREATE TRIGGER trg_CalculateTongTien
-ON ChiTietHoaDon
-AFTER INSERT, UPDATE
-AS
-BEGIN
-    -- Tính toán lại tổng tiền cho mỗi bản ghi mới chèn hoặc cập nhật
-    UPDATE cthd
-    SET cthd.TongTien = 
-        CASE 
-            WHEN i.ApDungKhuyenMai = 1 THEN
-                (SELECT dh.TienThuoc FROM DonHang dh WHERE dh.MaDonHang = i.MaHoaDon)
-                - ISNULL(i.SoTienKhuyenMai, 0) -- Sử dụng ISNULL để tránh giá trị NULL
-                + (SELECT ctdh.ChiPhiGiaoHang FROM ChiTietDonHang ctdh WHERE ctdh.MaVanDon = i.MaHoaDon)
-            ELSE
-                (SELECT dh.TienThuoc FROM DonHang dh WHERE dh.MaDonHang = i.MaHoaDon)
-                + (SELECT ctdh.ChiPhiGiaoHang FROM ChiTietDonHang ctdh WHERE ctdh.MaVanDon = i.MaHoaDon)
-        END
-    FROM ChiTietHoaDon cthd
-    INNER JOIN inserted i ON cthd.MaHoaDon = i.MaHoaDon
-    WHERE cthd.TongTien IS NULL OR cthd.TongTien = 0; -- Cập nhật khi TongTien chưa được tính
-END;
-GO

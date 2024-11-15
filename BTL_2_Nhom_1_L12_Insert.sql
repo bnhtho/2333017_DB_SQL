@@ -83,3 +83,4 @@ INSERT INTO ChiTietHoaDon (MaHoaDon, SoTienKhuyenMai, ApDungKhuyenMai, ThoiGianX
 VALUES
 ('HD001', 30000, 1, '2024-11-15 10:00:00', 270000),
 ('HD002', 0, 0, '2024-11-15 11:00:00', 150000);
+
