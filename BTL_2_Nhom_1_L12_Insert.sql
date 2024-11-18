@@ -1,16 +1,15 @@
-﻿use Medical
-
------
--- Dữ liệu mẫu cho ChiNhanh
+﻿-- Dữ liệu mẫu cho ChiNhanh
 INSERT INTO ChiNhanh (MaChiNhanh, MaNhanVienQuanLy, SoLuongSanPham, SoLuongDanhMucSanPham, SoLuongNhanVien, DiaChi, TenChiNhanh)
 VALUES 
-(3, 101, 200, 20, 15, N'123 Lê Lợi, Quận 1, TP.HCM', N'Chi nhánh Lê Lợi'),
-(4, 102, 150, 15, 10, N'45 Nguyễn Huệ, Quận 1, TP.HCM', N'Chi nhánh Nguyễn Huệ');
+(1, 101, 200, 20, 15, N'123 Lê Lợi, Quận 1, TP.HCM', N'Chi nhánh Lê Lợi'),
+(2, 102, 150, 15, 10, N'45 Nguyễn Huệ, Quận 1, TP.HCM', N'Chi nhánh Nguyễn Huệ');
+
 -- Dữ liệu mẫu cho NhanVien
 INSERT INTO NhanVien (MaNhanVien, TenNhanVien, NgaySinh, GioiTinh, Email, SoDienThoai, KinhNghiem, LuongNhanVien, MaChiNhanh, ChungChi, ChuyenMon, GiayPhepHanhNghe, TrinhDo)
 VALUES 
-(103, N'Nguyễn Văn A', '1985-05-20', 'M', N'a.nguyen@gmail.com', '0912345678', N'5', 15000000.00, 1, N'Y', N'B', N'GP01', N'D'),
-(104, N'Lê Thị C', '1990-08-15', 'F', N'b.le@gmail.com', '0923456789', N'3', 12000000.00, 2, N'N', N'A', N'GP02', N'C');
+(101, N'Nguyễn Văn A', '1985-05-20', 'M', N'a.nguyen@gmail.com', '0912345678', N'5', 15000000.00, 1, N'Y', N'B', N'GP01', N'D'),
+(102, N'Lê Thị B', '1990-08-15', 'F', N'b.le@gmail.com', '0923456789', N'3', 12000000.00, 2, N'N', N'A', N'GP02', N'C');
+
 -- Dữ liệu mẫu cho NguoiPhuThuoc
 INSERT INTO NguoiPhuThuoc (MaNguoiPhuThuoc, MaNhanVien, TenNguoiPhuThuoc, NgaySinh, GioiTinh, MoiQuanHe)
 VALUES 
