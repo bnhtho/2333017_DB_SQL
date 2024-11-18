@@ -1,89 +1,84 @@
 ﻿use Medical
--- Insert
--- Insert nhân viên
-INSERT INTO NhanVien (MaNhanVien, TenNhanVien, NgaySinh, GioiTinh, Email, SoDienThoai, KinhNghiem, LuongNhanVien)
-VALUES
-(1, 'Nguyen Van A', '1980-05-15', 'M', 'nguyenvana@gmail.com', '0912345678', '2', 15000000),
-(2, 'Tran Thi B', '1990-08-25', 'F', 'tranthib@gmail.com', '0987654321', '3', 18000000);
 
--- Insert bác sĩ
-INSERT INTO BacSi (MaNhanVien, ChungChi, ChuyenMon)
-VALUES
-(1, 'A', 'T'),
-(2, 'B', 'N');
-
--- Insert dược sĩ
-INSERT INTO DuocSi (MaNhanVien, GiayPhepHanhNghe, TrinhDo)
-VALUES
-(1, 'GP123456', 'C'),
-(2, 'GP987654', 'D');
+-----
+-- Dữ liệu mẫu cho ChiNhanh
+INSERT INTO ChiNhanh (MaChiNhanh, MaNhanVienQuanLy, SoLuongSanPham, SoLuongDanhMucSanPham, SoLuongNhanVien, DiaChi, TenChiNhanh)
+VALUES 
+(3, 101, 200, 20, 15, N'123 Lê Lợi, Quận 1, TP.HCM', N'Chi nhánh Lê Lợi'),
+(4, 102, 150, 15, 10, N'45 Nguyễn Huệ, Quận 1, TP.HCM', N'Chi nhánh Nguyễn Huệ');
+-- Dữ liệu mẫu cho NhanVien
+INSERT INTO NhanVien (MaNhanVien, TenNhanVien, NgaySinh, GioiTinh, Email, SoDienThoai, KinhNghiem, LuongNhanVien, MaChiNhanh, ChungChi, ChuyenMon, GiayPhepHanhNghe, TrinhDo)
+VALUES 
+(103, N'Nguyễn Văn A', '1985-05-20', 'M', N'a.nguyen@gmail.com', '0912345678', N'5', 15000000.00, 1, N'Y', N'B', N'GP01', N'D'),
+(104, N'Lê Thị C', '1990-08-15', 'F', N'b.le@gmail.com', '0923456789', N'3', 12000000.00, 2, N'N', N'A', N'GP02', N'C');
+-- Dữ liệu mẫu cho NguoiPhuThuoc
 INSERT INTO NguoiPhuThuoc (MaNguoiPhuThuoc, MaNhanVien, TenNguoiPhuThuoc, NgaySinh, GioiTinh, MoiQuanHe)
-VALUES
-(1, 1, 'Nguyen Thi Lan', '2015-06-25', 'F', 'Con'),
-(2, 1, 'Nguyen Minh Hoang', '2010-02-10', 'M', 'Con'),
-(3, 2, 'Tran Thi Bich', '2000-07-18', 'F', 'Chị')
--- Insert chi nhánh
-INSERT INTO ChiNhanh (MaChiNhanh, MaNhanVienQuanLy, SoLuongSanPham, SoLuongNhanVien, DiaChi, TenChiNhanh)
-VALUES
-(1, 1, 200, 20, '123 Main St, Hanoi', 'Chi nhánh Hà Nội'),
-(2, 2, 150, 15, '456 Tran Hung Dao, HCMC', 'Chi nhánh TP.HCM');
+VALUES 
+(1, 101, N'Nguyễn Văn C', '2010-06-01', 'M', N'Con'),
+(2, 102, N'Lê Thị D', '2012-04-15', 'F', N'Con');
 
--- Insert khuyến mãi
+-- Dữ liệu mẫu cho KhuyenMai
 INSERT INTO KhuyenMai (MaKhuyenMai, MaChiNhanh)
-VALUES
-('KM001', 1),
-('KM002', 2);
+VALUES 
+(N'KM01', 1),
+(N'KM02', 2);
 
--- Insert chương trình khuyến mãi
-INSERT INTO ChuongTrinhKhuyenMai (MaKhuyenMai, MaChiNhanh, NgayBatDau, NgayKetThuc, MoTa, LoaiGiam, GiaTriGiam)
-VALUES
-('KM001', 1, '2024-11-01', '2024-12-31', 'Giảm giá 10% cho sản phẩm', 1, 10),
-('KM002', 2, '2024-11-15', '2024-11-30', 'Giảm giá 20% cho đơn hàng trên 500k', 1, 20);
+-- Dữ liệu mẫu cho ChuongTrinhKhuyenMai
+INSERT INTO ChuongTrinhKhuyenMai (MaKhuyenMai, NgayBatDau, NgayKetThuc, MoTa, LoaiGiam, GiaTriGiam)
+VALUES 
+(N'KM01', '2024-11-01', '2024-11-30', N'Giảm giá 10% cho tất cả sản phẩm', 1, 10.00),
+(N'KM02', '2024-12-01', '2024-12-31', N'Giảm trực tiếp 50,000 VND', 2, 50000.00);
 
--- Insert nhà cung cấp
+-- Dữ liệu mẫu cho NhaCungCap
 INSERT INTO NhaCungCap (MaNhaCungCap, TenNhaCungCap, DiaChi)
-VALUES
-('NCC001', 'Công ty Dược phẩm A', '1 Phan Chu Trinh, Hà Nội'),
-('NCC002', 'Công ty Dược phẩm B', '2 Le Loi, TP.HCM');
+VALUES 
+(N'NCC01', N'Công ty Dược A', N'456 Đống Đa, Đà Nẵng'),
+(N'NCC02', N'Công ty Dược B', N'789 Phan Chu Trinh, Hà Nội');
 
--- Insert danh mục sản phẩm
-INSERT INTO DanhMucSanPham (MaSanPham, TenSanPham, DonViNhoNhat, SoSaoTrungBinh, MaChiNhanh, MaNhaCungCap)
-VALUES
-('SP001', 'Thuốc giảm đau A', 'Hộp', 4, 1, 'NCC001'),
-('SP002', 'Thuốc cảm cúm B', 'Vỉ', 5, 2, 'NCC002');
-SELECT * FROM DanhMucSanPham
--- Insert khách hàng
+-- Dữ liệu mẫu cho DanhMucSanPham
+INSERT INTO DanhMucSanPham (MaSanPham, TenSanPham, DonViNhoNhat, MaNhaCungCap, SoLuong, GiaBan, MaChiNhanh)
+VALUES 
+(N'SP01', N'Paracetamol 500mg', N'Hộp', N'NCC01', 100, 20000.00, 1),
+(N'SP02', N'Vitamin C', N'Hộp', N'NCC02', 50, 50000.00, 2);
+
+-- Dữ liệu mẫu cho Ban
+INSERT INTO Ban (MaSanPham, MaChiNhanh)
+VALUES 
+(N'SP01', 1),
+(N'SP02', 2);
+
+-- Dữ liệu mẫu cho KhachHang
 INSERT INTO KhachHang (MaKhachHang, TenKhachHang, SoNha, TenDuong, SoDienThoai, MaGioiThieu, DiemTichLuy, Tinh)
-VALUES
-('KH001', 'Le Thi C', '12', 'Nguyen Hue', '0912345678', 'KH002', 500, 'Hanoi'),
-('KH002', 'Pham Minh D', '34', 'Le Duan', '0987654321', NULL, 300, 'HCMC');
+VALUES 
+(N'KH01', N'Nguyễn Minh E', N'12', N'Lê Lợi', N'0987654321', NULL, 200, N'TP.HCM'),
+(N'KH02', N'Lê Văn F', N'34', N'Nguyễn Huệ', N'0987654322', NULL, 300, N'TP.HCM');
 
--- Insert đơn hàng
-INSERT INTO DonHang (MaDonHang, ToaThuoc, TienThuoc)
-VALUES
-('DH001', 'Toa thuốc cho bệnh nhân A', 300000),
-('DH002', 'Toa thuốc cho bệnh nhân B', 150000);
+-- Dữ liệu mẫu cho DonHang
+INSERT INTO DonHang (MaDonHang, ToaThuoc, TienThuoc, MaKhachHang, MaNhanVien)
+VALUES 
+(N'DH01', N'Toa thuốc số 1', 100000.00, N'KH01', 101),
+(N'DH02', N'Toa thuốc số 2', 200000.00, N'KH02', 102);
 
--- Insert đơn vị giao hàng
+-- Dữ liệu mẫu cho DonViGiaoHang
 INSERT INTO DonViGiaoHang (MaDonVi, TenDonVi)
-VALUES
-('DV001', 'DHL Express'),
-('DV002', 'VNPost');
+VALUES 
+(N'DVGH01', N'Giao hàng nhanh'),
+(N'DVGH02', N'Giao hàng tiết kiệm');
 
--- Insert đánh giá sản phẩm
-INSERT INTO DanhGia (MaDanhGia, MaKhachHang, NoiDungDanhGia, MaSanPham)
-VALUES
-('DG001', 'KH001', 'Sản phẩm rất tốt!', 'SP001'),
-('DG002', 'KH002', 'Thuốc cảm cúm hiệu quả!', 'SP002');
-SELECT * FROM DanhGia
--- Insert chi tiết đơn hàng
+-- Dữ liệu mẫu cho ChiTietDonHang
 INSERT INTO ChiTietDonHang (MaVanDon, TinhTrang, DiaChiDonHang, MaDonViVanChuyen, ChiPhiGiaoHang)
-VALUES
-('VD001', 'Đang giao', '12 Nguyen Hue, Hanoi', 'DV001', 30000),
-('VD002', 'Đã giao', '34 Le Duan, HCMC', 'DV002', 20000);
+VALUES 
+(N'VD01', N'Đang giao', N'123 Lê Lợi, TP.HCM', N'DVGH01', 30000.00),
+(N'VD02', N'Hoàn tất', N'45 Nguyễn Huệ, TP.HCM', N'DVGH02', 25000.00);
 
--- Insert chi tiết hóa đơn
+-- Dữ liệu mẫu cho ChiTietHoaDon
 INSERT INTO ChiTietHoaDon (MaHoaDon, SoTienKhuyenMai, ApDungKhuyenMai, ThoiGianXuatHoaDon, TongTien)
-VALUES
-('HD001', 30000, 1, '2024-11-15 10:00:00', 270000),
-('HD002', 0, 0, '2024-11-15 11:00:00', 150000);
+VALUES 
+(N'HD01', 10000.00, 1, '2024-11-15 14:00:00', 90000.00),
+(N'HD02', 5000.00, 1, '2024-11-16 10:30:00', 195000.00);
+
+-- Dữ liệu mẫu cho ThanhToan
+INSERT INTO ThanhToan (MaDonHang, MaChiNhanh, MaKhachHang)
+VALUES 
+(N'DH01', 1, N'KH01'),
+(N'DH02', 2, N'KH02');
