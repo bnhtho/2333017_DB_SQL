@@ -1,83 +1,76 @@
-﻿-- Dữ liệu mẫu cho ChiNhanh
+﻿-- Thêm dữ liệu vào bảng ChiNhanh
 INSERT INTO ChiNhanh (MaChiNhanh, MaNhanVienQuanLy, SoLuongSanPham, SoLuongDanhMucSanPham, SoLuongNhanVien, DiaChi, TenChiNhanh)
 VALUES 
-(1, 101, 200, 20, 15, N'123 Lê Lợi, Quận 1, TP.HCM', N'Chi nhánh Lê Lợi'),
-(2, 102, 150, 15, 10, N'45 Nguyễn Huệ, Quận 1, TP.HCM', N'Chi nhánh Nguyễn Huệ');
+(1, 101, 100, 10, 50, N'123 Đường A, Quận 1, TP.HCM', N'Chi Nhánh 1'),
+(2, 102, 120, 15, 60, N'456 Đường B, Quận 2, TP.HCM', N'Chi Nhánh 2');
 
--- Dữ liệu mẫu cho NhanVien
+-- Thêm dữ liệu vào bảng NhanVien
 INSERT INTO NhanVien (MaNhanVien, TenNhanVien, NgaySinh, GioiTinh, Email, SoDienThoai, KinhNghiem, LuongNhanVien, MaChiNhanh, ChungChi, ChuyenMon, GiayPhepHanhNghe, TrinhDo)
 VALUES 
-(101, N'Nguyễn Văn A', '1985-05-20', 'M', N'a.nguyen@gmail.com', '0912345678', N'5', 15000000.00, 1, N'Y', N'B', N'GP01', N'D'),
-(102, N'Lê Thị B', '1990-08-15', 'F', N'b.le@gmail.com', '0923456789', N'3', 12000000.00, 2, N'N', N'A', N'GP02', N'C');
+(101, N'Nguyễn Văn A', '1990-01-01', 'M', N'van.a@example.com', '0901234567', N'10', 15000000, 1, N'Y', N'Y', N'12345678', N'D'),
+(102, N'Nguyễn Thị B', '1992-02-02', 'F', N'thi.b@example.com', '0907654321', N'8', 12000000, 2, N'N', N'N', N'', N'C');
 
--- Dữ liệu mẫu cho NguoiPhuThuoc
+-- Thêm dữ liệu vào bảng NguoiPhuThuoc
 INSERT INTO NguoiPhuThuoc (MaNguoiPhuThuoc, MaNhanVien, TenNguoiPhuThuoc, NgaySinh, GioiTinh, MoiQuanHe)
 VALUES 
-(1, 101, N'Nguyễn Văn C', '2010-06-01', 'M', N'Con'),
-(2, 102, N'Lê Thị D', '2012-04-15', 'F', N'Con');
+(1, 101, N'Nguyễn Văn C', '2010-01-01', 'M', N'Con'),
+(2, 102, N'Nguyễn Văn D', '2000-05-05', 'M', N'Em');
 
--- Dữ liệu mẫu cho KhuyenMai
+-- Thêm dữ liệu vào bảng KhuyenMai
 INSERT INTO KhuyenMai (MaKhuyenMai, MaChiNhanh)
 VALUES 
 (N'KM01', 1),
 (N'KM02', 2);
 
--- Dữ liệu mẫu cho ChuongTrinhKhuyenMai
+-- Thêm dữ liệu vào bảng ChuongTrinhKhuyenMai
 INSERT INTO ChuongTrinhKhuyenMai (MaKhuyenMai, NgayBatDau, NgayKetThuc, MoTa, LoaiGiam, GiaTriGiam)
 VALUES 
-(N'KM01', '2024-11-01', '2024-11-30', N'Giảm giá 10% cho tất cả sản phẩm', 1, 10.00),
-(N'KM02', '2024-12-01', '2024-12-31', N'Giảm trực tiếp 50,000 VND', 2, 50000.00);
+(N'KM01', '2024-01-01', '2024-01-31', N'Giảm giá đầu năm', 1, 10.00),
+(N'KM02', '2024-02-01', '2024-02-28', N'Giảm giá Tết', 2, 50000.00);
 
--- Dữ liệu mẫu cho NhaCungCap
+-- Thêm dữ liệu vào bảng NhaCungCap
 INSERT INTO NhaCungCap (MaNhaCungCap, TenNhaCungCap, DiaChi)
 VALUES 
-(N'NCC01', N'Công ty Dược A', N'456 Đống Đa, Đà Nẵng'),
-(N'NCC02', N'Công ty Dược B', N'789 Phan Chu Trinh, Hà Nội');
+(N'NCC01', N'Công ty A', N'123 Đường A, TP.HCM'),
+(N'NCC02', N'Công ty B', N'456 Đường B, TP.HCM');
 
--- Dữ liệu mẫu cho DanhMucSanPham
+-- Thêm dữ liệu vào bảng DanhMucSanPham
 INSERT INTO DanhMucSanPham (MaSanPham, TenSanPham, DonViNhoNhat, MaNhaCungCap, SoLuong, GiaBan, MaChiNhanh)
 VALUES 
-(N'SP01', N'Paracetamol 500mg', N'Hộp', N'NCC01', 100, 20000.00, 1),
-(N'SP02', N'Vitamin C', N'Hộp', N'NCC02', 50, 50000.00, 2);
+(N'SP01', N'Thuốc A', N'Hộp', N'NCC01', 50, 100000, 1),
+(N'SP02', N'Thuốc B', N'Lọ', N'NCC02', 30, 200000, 2);
 
--- Dữ liệu mẫu cho Ban
+-- Thêm dữ liệu vào bảng Ban
 INSERT INTO Ban (MaSanPham, MaChiNhanh)
 VALUES 
 (N'SP01', 1),
 (N'SP02', 2);
 
--- Dữ liệu mẫu cho KhachHang
+-- Thêm dữ liệu vào bảng KhachHang
 INSERT INTO KhachHang (MaKhachHang, TenKhachHang, SoNha, TenDuong, SoDienThoai, MaGioiThieu, DiemTichLuy, Tinh)
 VALUES 
-(N'KH01', N'Nguyễn Minh E', N'12', N'Lê Lợi', N'0987654321', NULL, 200, N'TP.HCM'),
-(N'KH02', N'Lê Văn F', N'34', N'Nguyễn Huệ', N'0987654322', NULL, 300, N'TP.HCM');
+(N'KH01', N'Nguyễn Văn E', N'12', N'Nguyễn Trãi', '0912345678', NULL, 100, N'TP.HCM'),
+(N'KH02', N'Nguyễn Thị F', N'34', N'Lý Tự Trọng', '0918765432', N'KH01', 200, N'TP.HCM');
 
--- Dữ liệu mẫu cho DonHang
-INSERT INTO DonHang (MaDonHang, ToaThuoc, TienThuoc, MaKhachHang, MaNhanVien)
+-- Thêm dữ liệu vào bảng DonHang
+INSERT INTO DonHang (MaDonHang, ToaThuoc, TienThuoc, Ngay, NhanXet, MaKhachHang, MaNhanVien)
 VALUES 
-(N'DH01', N'Toa thuốc số 1', 100000.00, N'KH01', 101),
-(N'DH02', N'Toa thuốc số 2', 200000.00, N'KH02', 102);
+(N'DH01', N'Thuốc A: 2 hộp', 200000, '2024-01-15', N'Giao hàng nhanh', N'KH01', 101),
+(N'DH02', N'Thuốc B: 1 lọ', 200000, '2024-01-20', N'Dịch vụ tốt', N'KH02', 102);
 
--- Dữ liệu mẫu cho DonViGiaoHang
-INSERT INTO DonViGiaoHang (MaDonVi, TenDonVi)
+-- Thêm dữ liệu vào bảng BaoGom
+INSERT INTO BaoGom (MaSanPham, MaDonHang, SoLuong)
 VALUES 
-(N'DVGH01', N'Giao hàng nhanh'),
-(N'DVGH02', N'Giao hàng tiết kiệm');
+(N'SP01', N'DH01', 2),
+(N'SP02', N'DH02', 1);
 
--- Dữ liệu mẫu cho ChiTietDonHang
-INSERT INTO ChiTietDonHang (MaVanDon, TinhTrang, DiaChiDonHang, MaDonViVanChuyen, ChiPhiGiaoHang)
-VALUES 
-(N'VD01', N'Đang giao', N'123 Lê Lợi, TP.HCM', N'DVGH01', 30000.00),
-(N'VD02', N'Hoàn tất', N'45 Nguyễn Huệ, TP.HCM', N'DVGH02', 25000.00);
 
--- Dữ liệu mẫu cho ChiTietHoaDon
-INSERT INTO ChiTietHoaDon (MaHoaDon, SoTienKhuyenMai, ApDungKhuyenMai, ThoiGianXuatHoaDon, TongTien)
-VALUES 
-(N'HD01', 10000.00, 1, '2024-11-15 14:00:00', 90000.00),
-(N'HD02', 5000.00, 1, '2024-11-16 10:30:00', 195000.00);
 
--- Dữ liệu mẫu cho ThanhToan
-INSERT INTO ThanhToan (MaDonHang, MaChiNhanh, MaKhachHang)
-VALUES 
-(N'DH01', 1, N'KH01'),
-(N'DH02', 2, N'KH02');
+
+
+
+-- Đừng đụng vào!
+-- Cập nhật khóa ngoại MaNhanVienQuanLy sau
+ALTER TABLE ChiNhanh
+ADD CONSTRAINT FK_ChiNhanh_NhanVien FOREIGN KEY (MaNhanVienQuanLy) REFERENCES NhanVien(MaNhanVien);
+

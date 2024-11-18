@@ -132,6 +132,8 @@ CREATE TABLE DonHang (
     MaDonHang NVARCHAR(10) PRIMARY KEY,  -- Sửa thành NVARCHAR
     ToaThuoc NVARCHAR(255) NOT NULL,  -- Sửa thành NVARCHAR
     TienThuoc DECIMAL(10, 2) NOT NULL,
+	Ngay DATE, 
+	NhanXet NVARCHAR(500),
     -- MaDonViVanChuyen NVARCHAR(10),
     MaKhachHang NVARCHAR(10),
     MaNhanVien INT,
@@ -177,11 +179,12 @@ CREATE TABLE ThanhToan (
     FOREIGN KEY (MaChiNhanh) REFERENCES ChiNhanh(MaChiNhanh),
     FOREIGN KEY (MaKhachHang) REFERENCES KhachHang(MaKhachHang),
 )
-
-
-
-
--- Cập nhật khóa ngoại MaNhanVienQuanLy sau
-ALTER TABLE ChiNhanh
-ADD CONSTRAINT FK_ChiNhanh_NhanVien FOREIGN KEY (MaNhanVienQuanLy) REFERENCES NhanVien(MaNhanVien);
-
+-- [16] Bảng bao gồm
+CREATE TABLE BaoGom (
+    MaSanPham NVARCHAR(10) NOT NULL,
+    MaDonHang NVARCHAR(10) NOT NULL,
+	SoLuong INT NOT NULL,
+    FOREIGN KEY (MaSanPham) REFERENCES DanhMucSanPham(MaSanPham),
+    FOREIGN KEY (MaDonHang) REFERENCES DonHang(MaDonHang),
+    PRIMARY KEY (MaSanPham, MaDonHang)
+);
