@@ -69,8 +69,8 @@ VALUES
 
 
 
--- Đừng đụng vào!
--- Cập nhật khóa ngoại MaNhanVienQuanLy sau
-ALTER TABLE ChiNhanh
-ADD CONSTRAINT FK_ChiNhanh_NhanVien FOREIGN KEY (MaNhanVienQuanLy) REFERENCES NhanVien(MaNhanVien);
+-- -- Đừng đụng vào!
+-- -- Cập nhật khóa ngoại MaNhanVienQuanLy sau
+-- ALTER TABLE ChiNhanh
+-- ADD CONSTRAINT FK_ChiNhanh_NhanVien FOREIGN KEY (MaNhanVienQuanLy) REFERENCES NhanVien(MaNhanVien);
 

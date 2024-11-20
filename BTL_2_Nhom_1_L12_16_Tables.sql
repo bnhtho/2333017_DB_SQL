@@ -37,10 +37,11 @@ CREATE TABLE NhanVien (
     KinhNghiem NVARCHAR(2) NOT NULL,  -- Sửa thành NVARCHAR
     LuongNhanVien DECIMAL(10, 2),
     MaChiNhanh INT NOT NULL,
-    --BS FLag
+    LoaiNV BIT NOT NULL, -- 0 là dược sĩ , 1 là bác sĩ 
+    -- [1]Bác sĩ Flag
     ChungChi NVARCHAR(1) NOT NULL,  -- Sửa thành NVARCHAR
     ChuyenMon NVARCHAR(1) NOT NULL,  -- Sửa thành NVARCHAR
-    --DS Flag
+    -- [0]Dược sĩ Flag
     GiayPhepHanhNghe NVARCHAR(8) NOT NULL,  -- Sửa thành NVARCHAR
     TrinhDo NVARCHAR(1) NOT NULL,  -- Sửa thành NVARCHAR
     FOREIGN KEY (MaChiNhanh) REFERENCES ChiNhanh(MaChiNhanh) 
