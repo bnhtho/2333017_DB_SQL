@@ -27,11 +27,11 @@ BEGIN
 
     -- Tính số lượng nhân viên tối thiểu dựa trên số lượng sản phẩm
     IF @SoLuongSanPham < 100
-        SET @NhanVienToiThieu = CEILING(@SoLuongSanPham / 50.0); -- 1 nhân viên quản lý 50 sản phẩm
+        SET @NhanVienToiThieu = CEILING(@SoLuongSanPham / 15.0); -- 1 nhân viên quản lý 50 sản phẩm
     ELSE IF @SoLuongSanPham BETWEEN 100 AND 500
-        SET @NhanVienToiThieu = CEILING(@SoLuongSanPham / 100.0); -- 1 nhân viên quản lý 100 sản phẩm
+        SET @NhanVienToiThieu = CEILING(@SoLuongSanPham / 30.0); -- 1 nhân viên quản lý 100 sản phẩm
     ELSE
-        SET @NhanVienToiThieu = CEILING(@SoLuongSanPham / 150.0); -- 1 nhân viên quản lý 150 sản phẩm
+        SET @NhanVienToiThieu = CEILING(@SoLuongSanPham / 50.0); -- 1 nhân viên quản lý 150 sản phẩm
 
     -- Kiểm tra điều kiện số lượng nhân viên
     IF @SoLuongNhanVien < @NhanVienToiThieu
@@ -45,8 +45,6 @@ BEGIN
     END
 END;
 GO
-
-EXEC KiemTraNhanVienSanPham @MaChiNhanh = 1;
 
 
 -- Produre 2.4.1 do Đình Hoàn làm
