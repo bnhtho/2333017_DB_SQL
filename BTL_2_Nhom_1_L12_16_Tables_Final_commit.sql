@@ -42,7 +42,7 @@ CREATE TABLE NhanVien (
 	LuongNhanVien DECIMAL(10, 2),
 	MaChiNhanh INT,
 	LoaiNV BIT,
-	ChungChi NVARCHAR(15),
+	ChungChi NVARCHAR(255),
 	ChuyenMon NVARCHAR(15),
 	GiayPhepHanhNghe NVARCHAR(8),
 	TrinhDo NVARCHAR(1),
@@ -159,7 +159,7 @@ CREATE TABLE DonViGiaoHang (
 CREATE TABLE ChiTietDonHang (
 	MaVanDon NVARCHAR(10),
 	-- Đơn hàng đã được giao bởi nhà cung cấp -- mối quan hệ : Được giao bởi
-	TinhTrang NVARCHAR(50)  NOT NULL CHECK (TinhTrang IN ('Đã giao', 'Đang giao', 'Đã huỷ')),
+	TinhTrang NVARCHAR(255)  NOT NULL,
 	DiaChiDonHang NVARCHAR(255) NOT NULL,
 	MaDonViVanChuyen NVARCHAR(10),
 	ChiPhiGiaoHang DECIMAL(10, 2),
@@ -169,8 +169,6 @@ CREATE TABLE ChiTietDonHang (
 	MaDonHang NVARCHAR(10),
 	CONSTRAINT fk_chitietdonhang_donhang FOREIGN KEY (MaDonHang) REFERENCES DonHang(MaDonHang)
 );    -- cái này là mối quan hệ Được giao bởi giữa Đơn hàng và Đơn vị giao hàng
-
-
 -- [14] Chi tiết hóa đơn
 CREATE TABLE ChiTietHoaDon (
 	MaHoaDon NVARCHAR(10),
