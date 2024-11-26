@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE KiemTraNhanVienSanPham
+﻿use Medical
+CREATE PROCEDURE KiemTraNhanVienSanPham
     @MaChiNhanh INT
 AS
 BEGIN
@@ -82,3 +83,31 @@ BEGIN
 END$$
 DELIMITER ;
 -- End
+
+
+-- ╔═══════════════════════╗
+-- ║   Danh sách bán chạy  ║
+-- ╚═══════════════════════╝
+CREATE PROCEDURE SanPhamBanChay 
+@StartDate DATE,
+    @EndDate DATE
+AS
+BEGIN
+-- truy vấn: Danh mục sản phẩm
+SELECT DanhMucSanPham.TenSanPham , 
+DanhMucSanPham.MaSanPham, 
+SUM(BaoGom.SoLuong) AS TongSoLuongDaBan,
+DanhMucSanPham.GiaBan -- TongSoLuongDaBan là số sản phẩm đã bán được nếu đơn hàng đó mua cùng một loại sản phẩm.
+
+FROM BaoGom
+-- Join bảng BaoGom với DonHang [1] và JOIN bảng DanhMucSanPham với Bao Gom [2]
+INNER JOIN DonHang ON DonHang.MaDonHang =  BaoGom.MaDonHang --[1]
+INNER JOIN DanhMucSanPham ON DanhMucSanPham.MaSanPham = BaoGom.MaSanPham --[2]
+WHERE DonHang.Ngay BETWEEN @StartDate AND @EndDate
+GROUP BY DanhMucSanPham.MaSanPham, DanhMucSanPham.TenSanPham, DanhMucSanPham.GiaBan
+ORDER BY TongSoLuongDaBan DESC;
+END;
+GO
+
+EXEC SanPhamBanChay '2024-11-01', '2024-11-07';
+

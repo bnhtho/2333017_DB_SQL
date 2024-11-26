@@ -38,7 +38,7 @@ CREATE TABLE NhanVien (
 	GioiTinh CHAR(1) NOT NULL CHECK (GioiTinh IN ('M', 'F')),
 	Email NVARCHAR(50) NOT NULL,
 	SoDienThoai CHAR(11) NOT NULL,
-	KinhNghiem NVARCHAR(2),
+	KinhNghiem INT,
 	LuongNhanVien DECIMAL(10, 2),
 	MaChiNhanh INT,
 	LoaiNV BIT,
