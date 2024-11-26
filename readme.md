@@ -1,3 +1,9 @@
+> [!NOTE] 
+> **Cập nhật ngày 26/11/2024**
+> - Cập nhật lại mục Created Table ngày 26/11/2024
+> - Cập nhật dữ liệu mẫu ngày 26/11/2024
+> - Readme.md : Cập nhật Readme.md
+
 ## Thay đổi so với ERD
 > [!NOTE]
 > - Trong thực thể `DanhGia`, xoá đánh giá theo sao vì nó đã có sẵn trong thực thể `DanhMucSanPham` (nếu có sự thay đổi gì thì sẽ sửa lại và bổ sung sau)
@@ -110,78 +116,54 @@ FROM ChiNhanh cn
 JOIN KhuyenMai km ON cn.MaChiNhanh = km.MaChiNhanh
 JOIN ChuongTrinhKhuyenMai ctkm ON km.MaKhuyenMai = ctkm.MaKhuyenMai;
 ```
-## Triggers
-### Số lượng nhân viên và sản phẩm hợp lệ 
-> [!NOTE]  
-> Số lượng nhân viên không được ít khi so với số lượng sản phẩm
 
+### Xoá sạch database rác 
 ```sql
-CREATE TRIGGER trg__CheckSoLuongSP_Nhan_Vien
-ON ChiNhanh
-AFTER INSERT, UPDATE
-AS
-BEGIN
-	-- Kiểm tra điều kiện ràng buộc
-	IF EXISTS (
-    	SELECT 1
-    	FROM inserted
-    	WHERE SoLuongNhanVien < SoLuongSanPham / 10 -- Ví dụ: 1 nhân viên quản lý 10 sản phẩm
-	)
-	BEGIN
-    	-- Nếu không thỏa mãn điều kiện, rollback giao dịch
-    	ROLLBACK TRANSACTION;
-    	RAISERROR ('Số lượng nhân viên không đủ để quản lý số lượng sản phẩm hiện có.', 16, 1);
-	END
-END;
-GO
-```
-### Produces
-```sql
-use Medical
--- Phần 2.4.1
--- Câu 1
--- Create PROCEDURE KiemTraNhanVienSanPham
-CREATE PROCEDURE KiemTraNhanVienSanPham
-    @MaChiNhanh INT
-AS
-BEGIN
-    DECLARE @SoLuongNhanVien INT;
-    DECLARE @SoLuongSanPham INT;
-    
-    -- Kiểm tra tham số đầu vào
-    IF @MaChiNhanh IS NULL
-    BEGIN
-        PRINT 'Mã chi nhánh không hợp lệ.';
-        RETURN;
-    END
-	 -- Kiểm tra sự tồn tại của mã chi nhánh trong bảng ChiNhanh
-    IF NOT EXISTS (SELECT 1 FROM ChiNhanh WHERE MaChiNhanh = @MaChiNhanh)
-    BEGIN
-        PRINT 'Mã chi nhánh không tồn tại trong hệ thống.';
-        RETURN;
-    END
-    -- Lấy số lượng nhân viên và sản phẩm từ bảng ChiNhanh
-    SELECT @SoLuongNhanVien = SoLuongNhanVien, @SoLuongSanPham = SoLuongSanPham
-    FROM ChiNhanh
-    WHERE MaChiNhanh = @MaChiNhanh;
+use [master]
 
-    -- Kiểm tra điều kiện số lượng nhân viên
-    IF @SoLuongNhanVien < @SoLuongSanPham / 10
-    BEGIN
-        PRINT 'Số lượng nhân viên không đủ để quản lý số lượng sản phẩm.';
-    END
-    ELSE
-    BEGIN
-        PRINT 'Số lượng nhân viên đủ để quản lý số lượng sản phẩm.';
-    END
-END;
-GO
-EXEC KiemTraNhanVienSanPham @MaChiNhanh = 5;
-GO
-```
+DECLARE 
+@DATABASENAME nVARCHAR(20)
 
-## Ghi chú
-### Công thức tính tổng tiền
-```
-Tổng tiền = tiền thuốc + tiền khuyến mãi + chi phí giao hàng  
+DECLARE
+@TABLE TABLE
+(NAME nVARCHAR(50))
+
+Declare @SQL nvarchar(100)
+
+INSERT INTO @TABLE
+
+SELECT 
+name 
+FROM sys.databases 
+WHERE name not in 
+    ('master'
+    ,'tempdb'
+    ,'model'
+    ,'msdb'
+    ,'ReportServer'
+    ,'ReportServerTempDB')
+
+
+while (select COUNT(*) from @table) > 0
+
+begin
+
+select @DATABASENAME = (select top 1 (name) from @TABLE)
+
+DECLARE @kill varchar(8000) = '';
+SELECT @kill = @kill + 'kill ' + CONVERT(varchar(5), spid) + ';'
+FROM master..sysprocesses 
+WHERE dbid = db_id(@DATABASENAME)
+
+EXEC(@kill);
+
+set @SQL = 'drop database ' + @DATABASENAME
+
+exec sp_executesql @SQL, N'@databasename nvarchar(50)', @databasename; 
+
+print @databasename + ' has been deleted'
+
+delete from @TABLE where NAME = @DATABASENAME
+
+end
 ```
