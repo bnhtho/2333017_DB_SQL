@@ -69,4 +69,5 @@ $(document).ready(function() {
     })
   }
   loadInsertEmployeePage();  // Tải trang nhân viên khi bắt đầu
+
 });

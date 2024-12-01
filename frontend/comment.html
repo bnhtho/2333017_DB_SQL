@@ -1,3 +1,57 @@
-<!-- Trigger 2.3 -->
 <!-- Load đánh giá sản phẩm trang mục 2.3 -->
-<!-- View -->
+<!-- Tìm kiếm -->
+
+<!-- Search box -->
+<form>
+    <div class="mb-5 form-group">
+      <input type="text" class="form-control mt-2 text-secondary" id="formGroupExampleInput" placeholder="Nhập đơn hàng">
+    </div>
+    
+  </form>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped" id="productList">
+    <thead class="table-light">
+      <tr>
+        <th>Ngày</th>
+        <th>Nhận xét</th>
+        <th>Tiền thuốc</th>
+        <th>Toa thuốc</th>
+        <th>Số lượng</th>
+        <th>Tên sản phẩm</th>
+        <th>Giá bán</th>
+        <th>Đơn vị nhỏ nhất</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dữ liệu danh mục sản phẩm -->
+      <tr>
+        <tr>
+            <td>2024-11-21</td>
+            <td class="">Sản phẩm chưa thật sự tốt. Cần phải cải thiện</td>
+            <td>150000</td>
+            <td>Toa thuốc 1</td>
+            <td>5</td>
+            <td>Panadol</td>
+            <td>60</td>
+            <td>Hộp</td>
+          </tr>
+          <tr>
+            <td>2024-11-21</td>
+            <td>Khá tốt</td>
+            <td>150000</td>
+            <td>Toa thuốc 1</td>
+            <td>2</td>
+            <td>C Sủi</td>
+            <td>150</td>
+            <td>Hộp</td>
+          </tr>
+      </tr>
+      <!-- Các nhân viên khác -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+    // Load Table
+$('#productList').DataTable();
+</script>
