@@ -1,0 +1,51 @@
+<h3 class="text-center mb-4">Danh sách nhân viên</h3>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped">
+    <thead class="table-light">
+      <tr>
+        <th>Mã nhân viên</th>
+        <th>Họ tên</th>
+        <th>Ngày sinh</th>
+        <th>Giới tính</th>
+        <th>Số điện thoại</th>
+        <th>Lương</th>
+        <th>Vai trò</th>
+        <th>Chi nhánh</th>
+        <th>Tình trạng</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dữ liệu nhân viên -->
+      <tr>
+        <td>1004</td>
+        <td>
+          <div class="name-email">
+            <b>Phan Thị Hân</b>
+            <span class="text-secondary">phang@abc.com</span>
+          </div>
+        </td>
+        <td>1992-01-10</td>
+        <td>Nữ</td>
+        <td>0978123456</td>
+        <td>13000</td>
+        <td>Bác sĩ</td>
+        <td>TPHCM</td>
+        <td>
+          <span class="badge badge-info">Đang làm việc</span>
+        </td>
+        <td>
+          <div class="action-buttons">
+            <span class="btn btn-danger btn-sm" onclick="deleteEmployee(1004)" data-toggle="tooltip" data-placement="top" title="Xoá">
+              <i class="fa-solid fa-trash"></i>
+            </span>
+            <span class="btn btn-warning btn-sm" onclick="editEmployee(1004)" data-toggle="tooltip" data-placement="top" title="Sửa">
+              <i class="fa-solid fa-pen"></i>
+            </span>
+          </div>
+        </td>
+      </tr>
+      <!-- Các nhân viên khác -->
+    </tbody>
+  </table>
+</div>
