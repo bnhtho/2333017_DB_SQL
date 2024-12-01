@@ -1,0 +1,53 @@
+<!-- Load -->
+<!-- Danh sách bán chạy -->
+ <div class="container">
+    <div class="row align-items-md-stretch ">
+        <div class="col-md-12">
+            <div class="h-100 p-2  border rounded-3">
+            <h5 class="mt-2 text-center">Hiện thị danh sách sản phẩm bán chạy trong 1 khoảng thời gian</h6>
+            </p>
+            </div>
+        </div>
+        
+    </div>
+    
+ </div>
+
+ <div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Form nhập khoảng thời gian -->
+            <form id="filterForm" class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label for="startDate" class="form-label">Ngày Bắt Đầu</label>
+                    <input type="date" id="startDate" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="endDate" class="form-label">Ngày Kết Thúc</label>
+                    <input type="date" id="endDate" class="form-control" required>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary">Lọc Sản Phẩm</button>
+                </div>
+            </form>
+
+            <!-- Bảng danh sách sản phẩm -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Mã Sản Phẩm</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Số Lượng Đã Bán</th>
+                            <th>Giá Bán</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTable">
+                        <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
