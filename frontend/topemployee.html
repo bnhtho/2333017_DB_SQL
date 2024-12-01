@@ -1,0 +1,60 @@
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Bảng Xếp Hạng Nhân Viên Xuất Sắc</h1>
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Lọc theo thời gian</h5>
+        </div>
+        <div class="card-body">
+            <form id="filterForm">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="startDate" class="form-label">Ngày bắt đầu</label>
+                        <input type="text" class="form-control datepicker" id="startDate" placeholder="Chọn ngày bắt đầu">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="endDate" class="form-label">Ngày kết thúc</label>
+                        <input type="text" class="form-control datepicker" id="endDate" placeholder="Chọn ngày kết thúc">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Lọc</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Top 10 Nhân Viên Xuất Sắc</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Mã Nhân Viên</th>
+                        <th scope="col">Tên Nhân Viên</th>
+                        <th scope="col">Số Đơn Phụ Trách</th>
+                        <th scope="col">Doanh Thu (VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Đây là nơi hiển thị dữ liệu từ server -->
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>NV001</td>
+                        <td>Nguyễn Văn A</td>
+                        <td>150</td>
+                        <td>120,000,000</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>NV002</td>
+                        <td>Trần Thị B</td>
+                        <td>140</td>
+                        <td>110,000,000</td>
+                    </tr>
+                    <!-- Thêm các dòng tương tự cho các nhân viên khác -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

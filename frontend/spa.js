@@ -30,17 +30,15 @@ $(document).ready(function () {
       window.location.hash = 'product'; // Thay đổi hash
       loadPage('product.html');
     });
-
-    $('#loadCommentsPage').on('click', function (e) {
-      e.preventDefault();
-      window.location.hash = 'comments'; // Thay đổi hash
-      loadPage('comment.html');
-    });
-
     $('#loadhotProduct').on('click', function (e) {
       e.preventDefault();
       window.location.hash = 'hotProduct'; // Thay đổi hash
       loadPage('trending_products.html');
+    });
+    $('#loadhotTopEmployee').on('click', function (e) {
+      e.preventDefault();
+      window.location.hash = 'loadhotTopEmployee'; // Thay đổi hash
+      loadPage('topemployee.html');
     });
   }
 
@@ -54,12 +52,12 @@ $(document).ready(function () {
       case 'product':
         loadPage('product.html');
         break;
-      case 'comments':
-        loadPage('comment.html');
-        break;
       case 'hotProduct':
         loadPage('trending_products.html');
         break;
+        case 'loadhotTopEmployee':
+          loadPage('topemployee.html');
+          break;
       case 'insertEmployee':
       default:
         loadPage('insert_employee.html');
