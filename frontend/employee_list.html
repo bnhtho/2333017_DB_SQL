@@ -5,12 +5,9 @@
       <tr>
         <th>Mã nhân viên</th>
         <th>Họ tên</th>
-        <th>Ngày sinh</th>
-        <th>Giới tính</th>
-        <th>Số điện thoại</th>
-        <th>Lương</th>
+       
         <th>Vai trò</th>
-        <th>Chi nhánh</th>
+        <!-- <th>Chi nhánh</th> -->
         <th>Tình trạng</th>
         <th>Hành động</th>
       </tr>
@@ -25,12 +22,8 @@
             <span class="text-secondary">phang@abc.com</span>
           </div>
         </td>
-        <td>1992-01-10</td>
-        <td>Nữ</td>
-        <td>0978123456</td>
-        <td>13000</td>
+        
         <td>Bác sĩ</td>
-        <td>TPHCM</td>
         <td>
           <span class="badge badge-info">Đang làm việc</span>
         </td>
@@ -41,11 +34,100 @@
             </span>
             <span class="btn btn-warning btn-sm" onclick="editEmployee(1004)" data-toggle="tooltip" data-placement="top" title="Sửa">
               <i class="fa-solid fa-pen"></i>
+              
+            </span>
+            <span type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <!-- Thay #exampleModal = số id của nhân viên lấy từ Database. -->
+              <i class="fa-solid fa-eye"></i>
             </span>
           </div>
         </td>
       </tr>
-      <!-- Các nhân viên khác -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin nhân viên</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="maNhanVien" class="form-label">Mã Nhân Viên</label>
+                  <input type="text" class="form-control" id="maNhanVien" name="MaNhanVien" value="1004" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="tenNhanVien" class="form-label">Tên Nhân Viên</label>
+                  <input type="text" class="form-control" id="tenNhanVien" name="TenNhanVien" value="Phan Thị Hân" disabled>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="ngaySinh" class="form-label">Ngày Sinh</label>
+                  <input type="date" class="form-control" id="ngaySinh" name="NgaySinh" value="1992-01-10" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="gioiTinh" class="form-label">Giới Tính</label>
+                  <input type="text" class="form-control" id="gioiTinh" name="GioiTinh" value="Nữ" disabled>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="chiNhanh" class="form-label">Chi Nhánh</label>
+                  <input type="text" class="form-control" id="chiNhanh" name="ChiNhanh" value="Hồ Chí Minh" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="Email" value="phang@abc.com" disabled>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="soDienThoai" class="form-label">Số Điện Thoại</label>
+                  <input type="text" class="form-control" id="soDienThoai" name="SoDienThoai" value="0978123456" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="luongNhanVien" class="form-label">Lương Nhân Viên</label>
+                  <input type="text" class="form-control" id="luongNhanVien" name="LuongNhanVien" value="1300000.00" disabled>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="kinhNghiem" class="form-label">Kinh Nghiệm</label>
+                  <input type="text" class="form-control" id="kinhNghiem" name="KinhNghiem" value="3 năm" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="trinhDo" class="form-label">Trình Độ</label>
+                  <input type="text" class="form-control" id="trinhDo" name="TrinhDo" value="1" disabled>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="chuyenMon" class="form-label">Chuyên Môn</label>
+                  <input type="text" class="form-control" id="chuyenMon" name="ChuyenMon" value="Tai mũi họng" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="chungChi" class="form-label">Chứng Chỉ</label>
+                  <input type="text" class="form-control" id="chungChi" name="ChungChi" value="CK2" disabled>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal End -->
+
     </tbody>
   </table>
 </div>
+<script>
+// Lấy giá trị từ input có id "luongNhanVien"
+const luongNhanVien = document.getElementById("luongNhanVien").value;
+const formattedCurrency = formatCurrencyDetailed(luongNhanVien);
+document.getElementById("luongNhanVien").value = formattedCurrency;
+</script>

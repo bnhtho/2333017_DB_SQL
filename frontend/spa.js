@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  
   // Các hàm tải trang
   function loadPage(url) {
     $.ajax({
@@ -67,4 +68,5 @@ $(document).ready(function () {
 
   // Gọi hàm khi bắt đầu
   loadInitialPage();
+  
 });
