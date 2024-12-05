@@ -23,11 +23,12 @@ GO
 CREATE TABLE ChiNhanh (
 	MaChiNhanh INT PRIMARY KEY,
 	MaNhanVienQuanLy INT,
-	SoLuongSanPham INT,
-	SoLuongDanhMucSanPham INT,
-	SoLuongNhanVien INT,
+	SoLuongSanPham INT DEFAULT 0,
+	SoLuongDanhMucSanPham INT DEFAULT 0,
+	SoLuongNhanVien INT DEFAULT 0,
 	DiaChi NVARCHAR(100) NOT NULL,
 	TenChiNhanh NVARCHAR(100) NOT NULL
+	CONSTRAINT fk_chi_nhanh_nhan_vien FOREIGN KEY (MaNhanVienQuanLy) REFERENCES ChiNhanh(MaNhanVien),
 );
 
 -- [2] Nhân viên
@@ -118,7 +119,7 @@ CREATE TABLE KhachHang (
 	Tinh NVARCHAR(100) NOT NULL,
 	SoDienThoai NVARCHAR(11),
 	MaGioiThieu NVARCHAR(11),
-	DiemTichLuy INT
+	DiemTichLuy INT DEFAULT 0
 );
 
 -- [10] Khách hàng và số điện thoại
