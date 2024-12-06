@@ -2,20 +2,22 @@
 IF NOT EXISTS (
 	SELECT *
 	FROM sys.databases
-	WHERE name = 'Medical'
+	WHERE name = 'bhbl2hdmftum6o80eo1n'
 )
 BEGIN
-	CREATE DATABASE [Medical]
+	CREATE DATABASE bhbl2hdmftum6o80eo1n
 END
 GO
 
 -- Hỗ trợ tiếng Việt có dấu trong database Medical
-ALTER DATABASE Medical
+ALTER DATABASE bhbl2hdmftum6o80eo1n SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+ALTER DATABASE bhbl2hdmftum6o80eo1n
 COLLATE Latin1_General_100_CI_AS_SC_UTF8;
 GO
+ALTER DATABASE bhbl2hdmftum6o80eo1n SET MULTI_USER;
 
 -- Sử dụng database Medical
-USE Medical;
+USE bhbl2hdmftum6o80eo1n;
 GO
 
 -- Phần 1: Chi nhánh, chương trình khuyến mãi và nhân viên
@@ -28,7 +30,6 @@ CREATE TABLE ChiNhanh (
 	SoLuongNhanVien INT DEFAULT 0,
 	DiaChi NVARCHAR(100) NOT NULL,
 	TenChiNhanh NVARCHAR(100) NOT NULL
-	CONSTRAINT fk_chi_nhanh_nhan_vien FOREIGN KEY (MaNhanVienQuanLy) REFERENCES ChiNhanh(MaNhanVien),
 );
 
 -- [2] Nhân viên
@@ -201,3 +202,4 @@ CREATE TABLE BaoGom (
 	CONSTRAINT fk_baogom_ma_donhang FOREIGN KEY (MaDonHang) REFERENCES DonHang(MaDonHang),
 	PRIMARY KEY (MaSanPham, MaDonHang)
 );
+
